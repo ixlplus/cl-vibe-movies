@@ -1,0 +1,204 @@
+.vm-root {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  padding: 24px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.vm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.vm-nav {
+  display: flex;
+  gap: 10px;
+}
+
+.vm-btn {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  cursor: pointer;
+}
+
+.vm-btn--active {
+  background: #eff6ff;
+}
+
+.vm-card {
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+}
+
+.vm-muted {
+  color: #555;
+}
+
+.vm-input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+}
+
+.vm-input--search {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  margin-top: 0;
+}
+
+.vm-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.vm-primary {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+}
+
+.vm-dark {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: #111827;
+  color: white;
+  cursor: pointer;
+}
+
+.vm-error {
+  margin-top: 12px;
+  color: #b91c1c;
+}
+
+.vm-grid {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.vm-movie {
+  text-align: left;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  cursor: pointer;
+}
+
+.vm-movie--selected {
+  background: #eff6ff;
+}
+
+.vm-details-poster {
+  width: 140px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.vm-details-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.vm-title {
+  margin: 0;
+  font-size: 28px;
+}
+
+.vm-section-title {
+  margin: 0;
+  font-size: 16px;
+}
+
+.vm-subtext {
+  margin-top: 8px;
+  color: #555;
+  font-size: 13px;
+}
+
+.vm-movie-title {
+  font-weight: 700;
+}
+
+.vm-movie-meta {
+  color: #555;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.vm-details-help {
+  margin-top: 8px;
+  color: #555;
+}
+
+.vm-details-block {
+  margin-top: 10px;
+}
+
+.vm-details-heading {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.vm-details-plot {
+  margin-top: 12px;
+  color: #333;
+}
+
+.vm-loading {
+  margin-top: 8px;
+  color: #555;
+}
+
+.vm-save-row {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.vm-save-status {
+  font-size: 13px;
+}
+
+.vm-saved {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.vm-saved-poster {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+}
+
+.vm-saved-title {
+  margin-top: 8px;
+  font-weight: 700;
+}
+
+.vm-saved-meta {
+  margin-top: 4px;
+  color: #666;
+  font-size: 13px;
+}
