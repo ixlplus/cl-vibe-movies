@@ -72,6 +72,30 @@ If the key is missing, the API returns `400` with `OMDb API key not configured`.
 - The web UI dev server uses port `5173` with `strictPort: true`.
 - The API dev server uses port `3001` by default (override via `PORT` env var if needed).
 
+## Database mode (SQLite locally, Azure SQL in production)
+
+The API can run with either:
+
+- SQLite (default): stored locally under `server/data/vibemovies.sqlite` (created automatically)
+- Azure SQL (SQL Server): configured via environment variables
+
+### Environment variables
+
+Set these on the API host (locally or in Azure):
+
+- `DB_KIND`
+	- `sqlite` (default)
+	- `mssql` (Azure SQL)
+- `AZURE_SQL_CONNECTION_STRING`
+	- required only when `DB_KIND=mssql`
+
+### Azure SQL schema
+
+When `DB_KIND=mssql`, the API will create the required tables on first run:
+
+- `dbo.settings` (stores `omdb-api-key`)
+- `dbo.movies`
+
 ## How the app is structured
 
 At a high level, the app is split into a React front end and an Express API back end.
@@ -108,4 +132,6 @@ At a high level, the app is split into a React front end and an Express API back
 	- `settings(key TEXT PRIMARY KEY, value TEXT NOT NULL)`
 	- `movies(id TEXT PRIMARY KEY, title TEXT NOT NULL, ...)`
 - The OMDb API key is stored in `settings` under the key `omdb-api-key`.
+
+When using Azure SQL (`DB_KIND=mssql`), the same logical tables are created in `dbo`.
 
