@@ -4,7 +4,9 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --port 5173",
+    "dev": "vite --port 5173 --mode development",
+    "dev:proxy": "vite --port 5173 --mode proxy",
+    "dev:functions": "vite --port 5173 --mode functions",
     "build": "tsc -b && vite build",
     "preview": "vite preview --port 5173"
   },
