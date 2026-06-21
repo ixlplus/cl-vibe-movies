@@ -2,7 +2,7 @@ const { listMovies, getMssqlPool } = require('../shared');
 
 const corsHeaders = {
   'Content-Type': 'application/json',
-  'Access-Control-Allow-Origin': 'http://localhost:5173',
+  'Access-Control-Allow-Origin': process.env.CORS_ORIGIN ?? 'http://localhost:5173',
   'Access-Control-Allow-Headers': 'Content-Type',
   'Access-Control-Allow-Methods': 'GET,POST,OPTIONS'
 };
