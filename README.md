@@ -57,6 +57,22 @@ The web UI listens on:
 
 - `http://localhost:5173`
 
+### Choose the backend
+
+There are two local choices for the web app:
+
+1. Express mode:
+	- set `VITE_API_BASE=http://localhost:3001`
+	- the browser calls the Express API directly
+2. Proxy mode, recommended for local dev:
+	- leave `VITE_API_BASE` empty in `web/.env`
+	- Vite proxies `/api` to `http://localhost:7071`
+3. Direct Functions mode:
+	- set `VITE_API_BASE=http://localhost:7071`
+	- the browser calls Functions directly, so CORS must work
+
+Use `web/.env.example` for proxy mode, `web/.env.functions.example` for direct Functions mode, or set `VITE_API_BASE=http://localhost:3001` for Express mode before starting Vite.
+
 ## Configure OMDb API key (so `/api/omdb/*` works)
 
 The API reads the OMDb API key from the local SQLite database settings table (key: `omdb-api-key`).
@@ -95,6 +111,15 @@ When `DB_KIND=mssql`, the API will create the required tables on first run:
 
 - `dbo.settings` (stores `omdb-api-key`)
 - `dbo.movies`
+
+## Azure Functions local mode
+
+The Functions app under `functions/` now honors the same `DB_KIND` setting:
+
+- `sqlite` uses the local Functions SQLite store
+- `mssql` uses Azure SQL with the same `settings` and `movies` tables
+
+Set `DB_KIND` and `AZURE_SQL_CONNECTION_STRING` in `functions/local.settings.json` when you want the Functions host to use Azure SQL.
 
 ## How the app is structured
 

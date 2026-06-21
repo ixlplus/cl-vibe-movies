@@ -33,7 +33,23 @@ type SavedMovie = {
   savedAt: string;
 };
 
-const API_BASE = 'http://localhost:3001';
+type MovieRow = {
+  id: string;
+  title: string;
+  year: number | null;
+  genre: string | null;
+  director: string | null;
+  plot: string | null;
+  posterUrl: string | null;
+};
+
+function isValidPosterUrl(posterUrl: string | null | undefined) {
+  if (!posterUrl) return false;
+  if (posterUrl === 'N/A') return false;
+  return posterUrl.startsWith('http://') || posterUrl.startsWith('https://') || posterUrl.startsWith('data:');
+}
+
+const API_BASE = import.meta.env.VITE_API_BASE ?? '';
 
 function usePathname() {
   const [path, setPath] = useState(() => window.location.pathname);
@@ -85,7 +101,27 @@ export function App() {
 
   useEffect(() => {
     if (pathname !== '/') return;
-    setSavedMovies(loadSavedMovies());
+    (async () => {
+      const resp = await fetch(`${API_BASE}/api/movies`);
+      if (!resp.ok) return;
+      const json = (await resp.json()) as MovieRow[];
+      setSavedMovies(
+        Array.isArray(json)
+          ? json.map((movie) => ({
+              imdbID: movie.id,
+              Title: movie.title,
+              Year: movie.year?.toString() ?? undefined,
+              Plot: movie.plot ?? undefined,
+              PosterDataUrl: isValidPosterUrl(movie.posterUrl) ? movie.posterUrl : null,
+              Director: movie.director ?? undefined,
+              Genre: movie.genre ?? undefined,
+              savedAt: new Date().toISOString()
+            }))
+          : []
+      );
+    })().catch(() => {
+      setSavedMovies([]);
+    });
   }, [pathname]);
 
   async function onSearch() {
@@ -140,21 +176,6 @@ export function App() {
     }
   }
 
-  function loadSavedMovies(): SavedMovie[] {
-    try {
-      const raw = window.localStorage.getItem('vibemovies:saved');
-      if (!raw) return [];
-      const parsed = JSON.parse(raw) as SavedMovie[];
-      return Array.isArray(parsed) ? parsed : [];
-    } catch {
-      return [];
-    }
-  }
-
-  function persistSavedMovies(movies: SavedMovie[]) {
-    window.localStorage.setItem('vibemovies:saved', JSON.stringify(movies));
-  }
-
   async function onSaveSelected() {
     if (isSaving) return;
     setSaveStatus(null);
@@ -192,14 +213,45 @@ export function App() {
       savedAt: new Date().toISOString()
     };
 
-    const existing = loadSavedMovies();
-    console.log('[vibemovies] onSaveSelected existing saved count', { count: existing.length });
-    const next = [saved, ...existing.filter((m) => m.imdbID !== saved.imdbID)];
-    persistSavedMovies(next);
-    setSaveStatus('Saved to local storage');
+    const resp = await fetch(`${API_BASE}/api/movies`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        id: saved.imdbID,
+        title: saved.Title ?? saved.imdbID,
+        year: saved.Year ? Number.parseInt(saved.Year, 10) || null : null,
+        genre: saved.Genre ?? null,
+        director: saved.Director ?? null,
+        plot: saved.Plot ?? null,
+        posterUrl: saved.PosterDataUrl ?? null
+      })
+    });
+
+    if (!resp.ok) {
+      const json = await resp.json().catch(() => ({}));
+      setError(json.error ?? 'Failed to save movie');
+      setIsSaving(false);
+      return;
+    }
+
+    const listResp = await fetch(`${API_BASE}/api/movies`);
+    const listJson = listResp.ok ? ((await listResp.json()) as MovieRow[]) : [];
+    const next = Array.isArray(listJson)
+      ? listJson.map((movie) => ({
+          imdbID: movie.id,
+          Title: movie.title,
+          Year: movie.year?.toString() ?? undefined,
+          Plot: movie.plot ?? undefined,
+          PosterDataUrl: isValidPosterUrl(movie.posterUrl) ? movie.posterUrl : null,
+          Director: movie.director ?? undefined,
+          Genre: movie.genre ?? undefined,
+          savedAt: new Date().toISOString()
+        }))
+      : [];
+    setSavedMovies(next);
     console.log('[vibemovies] onSaveSelected done', { nextCount: next.length });
 
-    if (pathname === '/') setSavedMovies(next);
+    setSaveStatus('Saved to backend');
 
     setIsSaving(false);
   }
