@@ -1,10 +1,3 @@
 {
-  "version": "2.0",
-  "cors": {
-    "allowedOrigins": [
-        "http://localhost:5173",
-        "https://happy-bay-08a10c21e.7.azurestaticapps.net"
-    ],
-    "supportCredentials": false
-  }
+  "version": "2.0"
 }
